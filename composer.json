@@ -1,0 +1,20 @@
+{
+    "name": "MarketMeSuite/phranken-php",
+    "type": "lib",
+    "description": "A hodgepodge of php classes. For mad scientists only!",
+    "homepage": "https://github.com/marketmesuite/phranken-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bill Nunney",
+            "email": "bill@marketmesuite.com",
+            "homepage": "http://marketmesuite.com",
+            "role": "dev"
+        }
+    ],
+    "require" : {
+        "phpunit/phpunit": "3.7.*",
+        "satooshi/php-coveralls": "dev-master",
+        "psr/log": "1.0.0"
+    }
+}
