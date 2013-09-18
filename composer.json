@@ -13,6 +13,7 @@
         }
     ],
     "require" : {
+        "php": ">=5.3.14",
         "phpunit/phpunit": "3.7.*",
         "satooshi/php-coveralls": "dev-master",
         "psr/log": "1.0.0"
