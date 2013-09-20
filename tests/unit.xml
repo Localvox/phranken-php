@@ -1,0 +1,18 @@
+<phpunit
+	bootstrap="autoload.php"
+	processIsolation="false">
+	<logging>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+	</logging>
+	<!-- override php ini settings -->
+	<php>
+		<ini name="date.timezone" value="UTC"/>
+	</php>
+	<testsuites>
+		<testsuite name="everything">
+			<directory>tests/</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+	</filter>
+</phpunit>
