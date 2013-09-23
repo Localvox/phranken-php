@@ -11,20 +11,6 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
-    /**
-     * The expected code from marketmesuite pics functions
-     * @var string
-     */
-    protected $expectedCode = "zr3P4134v";
-    protected $expectedAmazonUrl = "https://s3.amazonaws.com/pictures-sharing/full/zr3P4134v";
-    protected $expectedPhotomeUrl = "http://marketmesuite.com/picture/?id=zr3P4134v";
-
-    protected $correctPhtomeUrl = "http://marketmesuite.com/picture/?id=zr3P4134v";
-
-    protected $wrongPhtomeUrl1 = "http://marketmesuite.com/picture";
-    protected $wrongPhtomeUrl2 = "http://marketmesuite.com/picture/";
-    protected $wrongPhtomeUrl3 = "http://marketmesuite.com/picture/?id=";
-    protected $wrongPhtomeUrl4 = "http://marketmesuite.com/picture?id=zr3P4134v";
 
     /**
      * Sets up the fixture, for example, opens a network connection.
