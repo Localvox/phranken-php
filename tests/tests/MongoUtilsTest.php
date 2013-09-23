@@ -6,10 +6,14 @@ namespace MarketMeSuite\Phranken\Database\Mongo\Util;
  */
 class MongoUtilsTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MongoUtils
-     */
-    protected $object;
+    //-------- vars for StringArrayToFieldsArray --------
+    protected $_expectedFieldArray = null;
+    protected $_expectedFieldArrayNegative = null;
+    protected $_inputFieldArray = null;
+
+    //-------- vars for testConstructInArray --------
+    protected $_inputConstructInArray = null;
+    protected $_expectedConstructInArray = null;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -17,7 +21,23 @@ class MongoUtilsTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new MongoUtils;
+        //-------- vars for StringArrayToFieldsArray --------
+        $this->_expectedFieldArray = array('prop1' => 1, 'prop2' => 1, 'prop3' => 1);
+        $this->_expectedFieldArrayNegative = array('prop1' => 0, 'prop2' => 0, 'prop3' => 0);
+        $this->_inputFieldArray = array('prop1', 'prop2', 'prop3');
+
+        //-------- vars for testConstructInArray --------
+        $this->_inputConstructInArray = array(1, 2, 3, 4, 5, 6);
+        $this->_input2ConstructInArray = array(
+            array('val' => 1),
+            array('val' => 2),
+            array('val' => 3),
+            array('val' => 4),
+            array('val' => 5),
+            array('val' => 6),
+        );
+        $this->_expectedConstructInArray = array('$in' => array(1, 2, 3, 4, 5, 6));
+        $this->_expectedConstructInArrayNegative = array('$nin' => array(1, 2, 3, 4, 5, 6));
     }
 
     /**
@@ -30,37 +50,109 @@ class MongoUtilsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::StringArrayToFieldsArray
-     * @todo   Implement testStringArrayToFieldsArray().
      */
     public function testStringArrayToFieldsArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertEquals(
+            MongoUtils::StringArrayToFieldsArray($this->_inputFieldArray),
+            $this->_expectedFieldArray
+        );
+
+        // should create an exclusion array
+        $this->assertEquals(
+            MongoUtils::StringArrayToFieldsArray($this->_inputFieldArray, true),
+            $this->_expectedFieldArrayNegative
+        );
+
+        $this->assertEquals(
+            MongoUtils::StringArrayToFieldsArray(array()),
+            array()
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::StringArrayToFieldsArray
+     */
+    public function testStringArrayToFieldsArray2()
+    {
+        $this->assertSame(
+            MongoUtils::StringArrayToFieldsArray('wrong'),
+            false
+        );
+
+        $this->assertSame(
+            MongoUtils::StringArrayToFieldsArray(null),
+            false
         );
     }
 
     /**
      * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::ConstructInArray
-     * @todo   Implement testConstructInArray().
      */
     public function testConstructInArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertSame(
+            MongoUtils::ConstructInArray($this->_inputConstructInArray),
+            $this->_expectedConstructInArray
+        );
+
+        $this->assertSame(
+            MongoUtils::ConstructInArray($this->_inputConstructInArray, true),
+            $this->_expectedConstructInArrayNegative
+        );
+
+        $this->assertSame(
+            MongoUtils::ConstructInArray($this->_input2ConstructInArray, false, 'val'),
+            $this->_expectedConstructInArray
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::ConstructInArray
+     */
+    public function testConstructInArray2()
+    {
+        $this->assertSame(
+            MongoUtils::ConstructInArray('wrong'),
+            false
+        );
+
+        $this->assertSame(
+            MongoUtils::ConstructInArray(null),
+            false
         );
     }
 
     /**
      * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::ConstructAndArray
-     * @todo   Implement testConstructAndArray().
      */
     public function testConstructAndArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertSame(
+            MongoUtils::ConstructAndArray(
+                array('_id' => 'val'),
+                array('name' => array('$in' => array('jim', 'bob')))
+            ),
+            array('$and'=>array(
+                array('_id' => 'val'),
+                array('name' => array('$in' => array('jim', 'bob')))
+            ))
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Mongo\Util\MongoUtils::ConstructAndArray
+     */
+    public function testConstructAndArray2()
+    {
+        $this->assertSame(
+            MongoUtils::ConstructAndArray(),
+            array('$and'=>array())
+        );
+
+        $this->assertSame(
+            MongoUtils::ConstructAndArray('blah', 1, null),
+            array('$and'=>array())
         );
     }
 
@@ -72,7 +164,7 @@ class MongoUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -84,7 +176,7 @@ class MongoUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -96,7 +188,7 @@ class MongoUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 }
