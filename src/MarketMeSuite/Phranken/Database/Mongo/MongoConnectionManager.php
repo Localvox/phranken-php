@@ -1,7 +1,7 @@
 <?php
 namespace MarketMeSuite\Phranken\Database\Mongo;
 
-use MarketMeSuite\Phranken\Database\Exception\MongoConnectionManagerException;
+use MarketMeSuite\Phranken\Database\Mongo\Exception\MongoConnectionManagerException;
 use \stdClass;
 use \Mongo;
 
