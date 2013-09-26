@@ -63,7 +63,7 @@ class ConsoleTable
 
             foreach ($this->tableData as $colKey => $rowsData) {
 
-                if (isset($rowsData[$i]) && is_string($rowsData[$i])) {
+                if (isset($rowsData[$i]) && !is_array($rowsData[$i])) {
 
                     $out .= str_pad($rowsData[$i], $colWidths[$colKey], ' ') . $pad;
                 } else {
