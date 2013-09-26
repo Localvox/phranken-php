@@ -63,7 +63,8 @@ class ConsoleTable
 
             foreach ($this->tableData as $colKey => $rowsData) {
 
-                if (isset($rowsData[$i])) {
+                if (isset($rowsData[$i]) && is_string($rowsData[$i])) {
+
                     $out .= str_pad($rowsData[$i], $colWidths[$colKey], ' ') . $pad;
                 } else {
                     $out .= str_pad('', $colWidths[$colKey], ' ') . $pad;
@@ -106,13 +107,18 @@ class ConsoleTable
     
     /**
      * gets the maximum length of the values in $arr
-     * @param  array  $arr An array of values. Values will be coarsed to strings
+     * @param  array  $arr An array of values. Values will be coersed to strings
      * @return integer     The length of the longest value in $arr
      */
     public function arrayGetMaxWidth(array $arr)
     {
         $val = 0;
         foreach ($arr as $value) {
+
+            // if not a string coerce to string
+            if (!is_string($value)) {
+                $value = (string) $value;
+            }
 
             if (strlen($value) > $val) {
                 $val = strlen($value);
