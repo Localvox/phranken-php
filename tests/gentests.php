@@ -25,7 +25,7 @@ if (count($argv) > 1) {
 
 $exclude = array('/amazonsdk/');
 $base = dirname(dirname(__FILE__));
-$sources = array($base . '/MarketMeSuite');
+$sources = array($base . '/src/MarketMeSuite');
 $target = $base . '/tests/tests/';
 
 if (isset($path)) {
@@ -33,7 +33,7 @@ if (isset($path)) {
     $namespace = getNameSpace(file($path));
 
     if (empty($namespace)) {
-        continue;
+        return;
     }
 
     $namespace .= '\\' . basename($path, '.php');
@@ -118,6 +118,10 @@ if (isset($path)) {
  */
 function getNameSpace($file)
 {
+    if (isset($file[1]) === false) {
+        return false;
+    }
+
     if (strpos($file[1], 'namespace') !== false) {
         preg_match("/(?<=namespace ).+(?= {|;)/", $file[1], $matches);
 
