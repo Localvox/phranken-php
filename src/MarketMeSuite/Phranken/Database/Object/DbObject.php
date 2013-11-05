@@ -20,6 +20,11 @@ abstract class DbObject implements IDbObject
     public static $ID_FIELD = '_id';
 
     /**
+     * @var array An array of key -> value pairs
+     */
+    public $map;
+
+    /**
      * loads a mongo document array into this object structure
      * @param  array  $data A document array from a mongo query
      */
@@ -70,12 +75,12 @@ abstract class DbObject implements IDbObject
         switch($type) {
             case 'set':
                 // the _id field can not exist for set queries
-                unset( $arr[static::$ID_FIELD] );
+                unset( $arr[$this->getIdFieldName()] );
                 return $arr;
             break;
             case 'insert':
                 // genreate a UUID for the insert query
-                $arr[static::$ID_FIELD] = UniqueIDGenerator::GenerateUUID();
+                $arr[$this->getIdFieldName()] = UniqueIDGenerator::GenerateUUID();
                 return $arr;
             break;
             default:
@@ -169,8 +174,35 @@ abstract class DbObject implements IDbObject
         return $arrs;
     }
 
+    /**
+     * @see IDbObject::getMap
+     */
     public function getMap()
     {
-        return array();
+        return $this->map;
+    }
+
+    /**
+     * @see IDbObject::setMap
+     */
+    public function setMap(array $map)
+    {
+        $this->map = $map;
+    }
+
+    /**
+     * @see IDbObject::setIdFieldName
+     */
+    public function setIdFieldName($name)
+    {
+        static::$ID_FIELD = $name;
+    }
+
+    /**
+     * @see IDbObject::getIdFieldName
+     */
+    public function getIdFieldName()
+    {
+        return static::$ID_FIELD;
     }
 }

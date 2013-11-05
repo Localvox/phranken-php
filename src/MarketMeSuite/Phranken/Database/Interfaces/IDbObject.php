@@ -37,6 +37,14 @@ interface IDbObject
     public function getMap();
 
     /**
+     * @param array $map An associative array where:
+     *
+     * $key   = the target database key
+     * $value = the target property name
+     */
+    public function setMap(array $map);
+
+    /**
      * Runs multiple fromArray() for every item in $arr
      * @param array $arr An array of mongo documents, Can also be a mongo cursor
      * @param string $class A valid class name that implements IDbObject
@@ -53,4 +61,16 @@ interface IDbObject
      * @throws DbObjectException When an object in $arr does not implement IDbObject
      */
     public static function multiToArray(array $arr);
+
+    /**
+     * The id field is the field that is used to build insert queries
+     * @param string $name The name of the id field
+     */
+    public function setIdFieldName($name);
+
+    /**
+     * Gets the set id that was set with setIdFieldName()
+     * @see setIdFieldName
+     */
+    public function getIdFieldName();
 }
