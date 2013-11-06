@@ -2,3 +2,5 @@
 /vendor
 tests/build/logs/clover.xml
 nbproject
+.name
+.idea
