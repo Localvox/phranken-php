@@ -30,6 +30,23 @@ abstract class DbObjectDynamic extends DbObject implements IDbObjectDynamic
     }
 
     /**
+     * @return array
+     * @see DbObject::toArray
+     */
+    public function toArray()
+    {
+        // do regular parse
+        $arr = parent::toArray();
+
+        // get all dynamic properties
+        $dynamicProps = $this->getDynamicprops();
+
+        // merge and return full data
+        return array_merge($arr, $dynamicProps);
+    }
+
+
+    /**
      * @see IDbObjectDynamic::parseDynamicProperties
      */
     public function parseDynamicProperties(array $data)
