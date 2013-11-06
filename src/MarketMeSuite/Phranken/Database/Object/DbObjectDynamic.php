@@ -41,6 +41,12 @@ abstract class DbObjectDynamic extends DbObject implements IDbObjectDynamic
         // get all dynamic properties
         $dynamicProps = $this->getDynamicprops();
 
+        // if no dynamic properties are set then
+        // just return the parent result
+        if (!is_array($dynamicProps)) {
+            return $arr;
+        }
+
         // merge and return full data
         return array_merge($arr, $dynamicProps);
     }
