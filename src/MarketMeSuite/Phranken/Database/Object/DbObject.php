@@ -55,10 +55,20 @@ abstract class DbObject implements IDbObject
         $out = array();
 
         foreach ($map as $dbKey => $variableName) {
-            // @note that "$this->$variableName" is a variable variable
-            // it is on purpose
-            $out[$dbKey] = $this->{$variableName};
+
+            $value = $this->getProp($variableName);
+
+            // If the property is an instance of
+            // IDbObject then execute it's toArray
+            // and use the result as the value
+            if ($value instanceof IDbObject) {
+                $value = $value->toArray();
+            }
+
+            $out[$dbKey] = $value;
         }
+
+
 
         return $out;
     }
