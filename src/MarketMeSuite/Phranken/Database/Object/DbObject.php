@@ -13,20 +13,23 @@ abstract class DbObject implements IDbObject
     /**
      * The default "id" field for records
      * In mongo this is usually '_id' and in mysql it is 'id'
-     * Because DbObject is database agnostic this is able to be overriden
+     * Because DbObject is database agnostic this is able to be overridden
      * by subclasses that may be for other database engines.
      * @var string
      */
     public static $ID_FIELD = '_id';
 
     /**
-     * @var array An array of key -> value pairs
+     * @var array An array of key => value pairs
      */
     public $map;
 
     /**
      * loads a mongo document array into this object structure
-     * @param  array  $data A document array from a mongo query
+     *
+     * @param  array $data A document array from a mongo query
+     *
+     * @throws DbObjectException If a required mapped property does not exist in $data
      */
     public function fromArray(array $data)
     {
@@ -68,16 +71,17 @@ abstract class DbObject implements IDbObject
             $out[$dbKey] = $value;
         }
 
-
-
         return $out;
     }
 
     /**
      * Converts this object into particular mongo queries
+     *
      * @param  string $type The type of query to export
+     *
      * @return array        The result of toArray() with particular fields ommitted/added
      *                      depending on the type
+     * @throws DbObjectException If $type is not a recognised type
      */
     public function toQuery($type)
     {
@@ -101,8 +105,11 @@ abstract class DbObject implements IDbObject
 
     /**
      * sets an object property
+     *
      * @param string $key   The name of the property
      * @param mixed  $value The value to set $key to
+     *
+     * @throws DbObjectException If $key does not exist in the configured map
      */
     public function setProp($key, $value)
     {
@@ -120,6 +127,8 @@ abstract class DbObject implements IDbObject
      * Gets a property
      * @param  string $key The name of the property
      * @return mixed       The value of $key
+     *
+     * @throws DbObjectException When $key does not exist in map
      */
     public function getProp($key)
     {
@@ -134,8 +143,10 @@ abstract class DbObject implements IDbObject
 
     /**
      * Runs multiple fromArray() for every item in $arr
-     * @param array $arr An array of mongo documents, Can also be a mongo cursor
+     *
+     * @param array  $arr   An array of mongo documents, Can also be a mongo cursor
      * @param string $class A valid class name that implements IDbObject
+     *
      * @return array An array of objects
      * @throws DbObjectException When $class does not implement IDbObject
      */
@@ -161,7 +172,9 @@ abstract class DbObject implements IDbObject
 
     /**
      * Runs multiple toArray() for every IDbObject in $arr
+     *
      * @param array $arr An array of IDbObject instances
+     *
      * @return array An array of arrays where each sub array is the result of calling
      * toArray on each objecting in $arr
      * @throws DbObjectException When an object in $arr does not implement IDbObject
