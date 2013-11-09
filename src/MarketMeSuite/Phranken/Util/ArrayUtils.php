@@ -9,8 +9,8 @@ class ArrayUtils
 {
     /**
     * Implode every array within a 2D array
-    * @param type $array
-    * @param type $del
+    * @param array  $array
+    * @param string $del
     * @return array The imploded array
     */
     public static function buildJoinedArray(array $array, $del)
@@ -100,6 +100,8 @@ class ArrayUtils
             }
             $i++;
         }
+
+        return false;
     }
     
     /**
@@ -242,5 +244,29 @@ class ArrayUtils
         }
         // Returns the $newArray with all the randomly selected elements in it.
         return $newArray;
+    }
+
+    /**
+     * Creates an xml representation of the provided associative array
+     * @param  array  $arr An associative array
+     * @return string The XML representation of the input array. array keys are used for element identifiers
+     * and values are used as element contents. Where the value is an array it is also converted as XML, recursively.
+     */
+    public static function arrayToXmlAssoc(array $arr)
+    {
+        $xml = '';
+
+        foreach ($arr as $key => $value) {
+
+            if (is_array($value)) {
+                $value = self::ArrayToXmlAssoc($value);
+            } else {
+                $value = "<![CDATA[$value]]>";
+            }
+
+            $xml .= "<$key>$value</$key>";
+        }
+
+        return $xml;
     }
 }
