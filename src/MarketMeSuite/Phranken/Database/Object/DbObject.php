@@ -25,6 +25,16 @@ abstract class DbObject implements IDbObject
     public $map;
 
     /**
+     * To be recognised by the toArray method, this bool should
+     * control whether null values in properties are allowed.
+     *
+     * @var bool When true, null propert values are permitted
+     *           otherwise properties with null values are
+     *           ommitted from the final array
+     */
+    protected static $TO_ARRAY_ALLOW_NULL = false;
+
+    /**
      * loads a mongo document array into this object structure
      *
      * @param  array $data A document array from a mongo query
@@ -66,6 +76,13 @@ abstract class DbObject implements IDbObject
             // and use the result as the value
             if ($value instanceof IDbObject) {
                 $value = $value->toArray();
+            }
+
+            // if a value is encountered that is null then
+            // and the class is set to ignore null values
+            // then do not add this key => value to the array
+            if (static::$TO_ARRAY_ALLOW_NULL === false && $value === null) {
+                continue;
             }
 
             $out[$dbKey] = $value;
