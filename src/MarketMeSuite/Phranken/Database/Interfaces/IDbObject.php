@@ -1,6 +1,8 @@
 <?php
 namespace MarketMeSuite\Phranken\Database\Interfaces;
 
+use MarketMeSuite\Phranken\Database\Exception\DbObjectException;
+
 /**
  * defines the basic methods that a database object should expose
  */
@@ -73,4 +75,23 @@ interface IDbObject
      * @see setIdFieldName
      */
     public function getIdFieldName();
+
+    /**
+     * sets an object property
+     *
+     * @param string $key   The name of the property
+     * @param mixed  $value The value to set $key to
+     *
+     * @throws DbObjectException If $key does not exist in the configured map
+     */
+    public function setProp($key, $value);
+
+    /**
+     * Gets a property
+     * @param  string $key The name of the property
+     * @return mixed       The value of $key
+     *
+     * @throws DbObjectException When $key does not exist in map
+     */
+    public function getProp($key);
 }
