@@ -32,6 +32,16 @@ abstract class DbObject implements IDbObject
     public $map;
 
     /**
+     * When true, if fromArray is called with an array that does
+     * not have all the keys present in $map an DbObjectException
+     * is thrown with details of the missing keys.
+     * When false, missing keys are ignored.
+     *
+     * @var bool
+     */
+    protected $strictMap = false;
+
+    /**
      * To be recognised by the toArray method, this bool should
      * control whether null values in properties are allowed.
      *
@@ -52,6 +62,13 @@ abstract class DbObject implements IDbObject
     {
         $map = $this->getMap();
 
+        // if strict map is true then
+        // assert that the map has all
+        // keys needed
+        if ($this->getStrictMap() === true) {
+            $this->assertArrayHasAllMapKeys($data);
+        }
+
         foreach ($map as $dbKey => $variableName) {
 
             if (! property_exists($this, $variableName)) {
@@ -64,6 +81,54 @@ abstract class DbObject implements IDbObject
             }
         }
     }
+
+    /**
+     * Asserts that all keys in the configured map exist
+     * within provided $arr
+     *
+     * @param array $arr An associative array
+     *
+     * @throws DbObjectException If any keys from map do not exist
+     *                           within $arr
+     */
+    public function assertArrayHasAllMapKeys(array $arr)
+    {
+        $map = $this->getMap();
+
+        $providedkeys = array_keys($arr);
+        $mappedKeys = array_keys($map);
+
+        $missingKeys = array_diff($mappedKeys, $providedkeys);
+
+        if (!empty($missingKeys)) {
+            throw new DbObjectException(
+                'provided $arr does not have all required keys. Missing: ' .
+                implode(',', $missingKeys)
+            );
+        }
+    }
+
+    /**
+     * When true, if fromArray is called with an array that does
+     * not have all the keys present in $map an DbObjectException
+     * is thrown with details of the missing keys.
+     * When false, missing keys are ignored.
+     *
+     * @param boolean $strictMap
+     */
+    public function setStrictMap($strictMap)
+    {
+        $this->strictMap = $strictMap;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getStrictMap()
+    {
+        return $this->strictMap;
+    }
+
 
     /**
      * Converts this object into a database-compatable associative array

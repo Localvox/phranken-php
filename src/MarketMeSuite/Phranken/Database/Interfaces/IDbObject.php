@@ -108,6 +108,32 @@ interface IDbObject
     public function getProp($key);
 
     /**
+     * Asserts that all keys in the configured map exist
+     * within provided $arr
+     *
+     * @param array $arr An associative array
+     *
+     * @throws DbObjectException If any keys from map do not exist
+     *                           within $arr
+     */
+    public function assertArrayHasAllMapKeys(array $arr);
+
+    /**
+     * When true, if fromArray is called with an array that does
+     * not have all the keys present in $map an DbObjectException
+     * is thrown with details of the missing keys.
+     * When false, missing keys are ignored.
+     *
+     * @param boolean $strictMap
+     */
+    public function setStrictMap($strictMap);
+
+    /**
+     * @return bool
+     */
+    public function getStrictMap();
+
+    /**
      * @param boolean $allowNull
      */
     public function setToArrayAllowNull($allowNull);
