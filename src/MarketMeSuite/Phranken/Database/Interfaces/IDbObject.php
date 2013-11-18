@@ -77,6 +77,18 @@ interface IDbObject
     public function getIdFieldName();
 
     /**
+     * The local id field is the local name of the property
+     * @param string $name The name of the id field
+     */
+    public function setIdPropName($name);
+
+    /**
+     * Gets the set id that was set with setIdPropName()
+     * @see setIdPropName
+     */
+    public function getIdPropName();
+
+    /**
      * sets an object property
      *
      * @param string $key   The name of the property

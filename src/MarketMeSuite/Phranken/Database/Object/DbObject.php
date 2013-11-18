@@ -20,6 +20,13 @@ abstract class DbObject implements IDbObject
     public static $ID_FIELD = '_id';
 
     /**
+     * The property version of ID_FIELD
+     *
+     * @var string
+     */
+    public static $ID_PROP = 'id';
+
+    /**
      * @var array An array of key => value pairs
      */
     public $map;
@@ -244,5 +251,24 @@ abstract class DbObject implements IDbObject
     public function getIdFieldName()
     {
         return static::$ID_FIELD;
+    }
+
+    /**
+     * The local id field is the local name of the property
+     *
+     * @param string $name The name of the id field
+     */
+    public function setIdPropName($name)
+    {
+        static::$ID_PROP = $name;
+    }
+
+    /**
+     * Gets the set id that was set with setIdPropName()
+     * @see setIdPropName
+     */
+    public function getIdPropName()
+    {
+        return static::$ID_PROP;
     }
 }
