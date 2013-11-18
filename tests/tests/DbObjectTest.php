@@ -32,7 +32,24 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
-    protected $validDbArray = null;
+    protected $validDbArray = array(
+        '_id'        => 'foobarid',
+        'network'    => 'twitter',
+        'first_name' => 'bill',
+        'last_name'  => 'nunney'
+    );
+
+    protected $validDbArrayMissingKeys = array(
+        '_id'     => 'foobarid',
+        'network' => 'twitter'
+    );
+
+    protected $validDbArrayNullValues = array(
+        '_id'        => 'foobarid',
+        'network'    => 'twitter',
+        'first_name' => null,
+        'last_name'  => null
+    );
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -41,13 +58,6 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new TestDbObject;
-
-        $this->validDbArray = array(
-            '_id' => 'foobarid',
-            'network' => 'twitter',
-            'first_name' => 'bill',
-            'last_name' => 'nunney'
-        );
     }
 
     /**
@@ -74,13 +84,29 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers MarketMeSuite\Phranken\Database\Object\DbObject::toArray
-     * @todo   Implement testToArray().
      */
     public function testToArray()
     {
         $this->object->fromArray($this->validDbArray);
         $expected = $this->object->toArray($this->validDbArray);
         $actual = $this->validDbArray;
+
+        $this->assertSame(
+            $expected,
+            $actual,
+            'The object should be able to convert from and array to and object and back again with no issues'
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::toArray
+     */
+    public function testToArray2()
+    {
+        $this->object->setToArrayAllowNull(true);
+        $this->object->fromArray($this->validDbArrayNullValues);
+        $expected = $this->object->toArray($this->validDbArrayNullValues);
+        $actual = $this->validDbArrayNullValues;
 
         $this->assertSame(
             $expected,
@@ -159,5 +185,25 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
         );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::assertArrayHasAllMapKeys
+     *
+     * @expectedException \MarketMeSuite\Phranken\Database\Exception\DbObjectException
+     */
+    public function testAssertArrayHasAllMapKeys()
+    {
+        $this->object->setStrictMap(true);
+        $this->object->assertArrayHasAllMapKeys($this->validDbArrayMissingKeys);
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::assertArrayHasAllMapKeys
+     */
+    public function testAssertArrayHasAllMapKeys2()
+    {
+        $this->object->setStrictMap(true);
+        $this->object->assertArrayHasAllMapKeys($this->validDbArrayNullValues);
     }
 }
