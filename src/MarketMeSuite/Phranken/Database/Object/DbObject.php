@@ -39,7 +39,7 @@ abstract class DbObject implements IDbObject
      *           otherwise properties with null values are
      *           ommitted from the final array
      */
-    protected static $TO_ARRAY_ALLOW_NULL = false;
+    protected $toArrayAllowNull = false;
 
     /**
      * loads a mongo document array into this object structure
@@ -88,7 +88,7 @@ abstract class DbObject implements IDbObject
             // if a value is encountered that is null then
             // and the class is set to ignore null values
             // then do not add this key => value to the array
-            if (static::$TO_ARRAY_ALLOW_NULL === false && $value === null) {
+            if ($this->getToArrayAllowNull() === false && $value === null) {
                 continue;
             }
 
@@ -270,5 +270,21 @@ abstract class DbObject implements IDbObject
     public function getIdPropName()
     {
         return static::$ID_PROP;
+    }
+
+    /**
+     * @param boolean $allowNull
+     */
+    public function setToArrayAllowNull($allowNull)
+    {
+        $this->toArrayAllowNull = $allowNull;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getToArrayAllowNull()
+    {
+        return $this->toArrayAllowNull;
     }
 }

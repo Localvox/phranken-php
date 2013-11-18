@@ -106,4 +106,14 @@ interface IDbObject
      * @throws DbObjectException When $key does not exist in map
      */
     public function getProp($key);
+
+    /**
+     * @param boolean $allowNull
+     */
+    public function setToArrayAllowNull($allowNull);
+
+    /**
+     * @return boolean
+     */
+    public function getToArrayAllowNull();
 }
