@@ -1,0 +1,6 @@
+language: php
+php:
+  - 5.4
+script: "./runtests.sh"
+before_script: "composer update; cd tests"
+after_script: "cd .."
