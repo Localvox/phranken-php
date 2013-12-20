@@ -4,3 +4,4 @@ tests/build/logs/clover.xml
 nbproject
 .name
 .idea
+tests/report
