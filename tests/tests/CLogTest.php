@@ -17,7 +17,7 @@ class CLogTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new CLog;
+        $this->object = new CLog('test');
     }
 
     /**
@@ -29,14 +29,113 @@ class CLogTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MarketMeSuite\Phranken\Commandline\CLog::Log
-     * @todo   Implement testLog().
+     * @covers MarketMeSuite\Phranken\Commandline\CLog::__construct
+     */
+    public function testConstruct()
+    {
+        $clog = new CLog('test');
+
+        $this->assertInternalType('array', $clog->getColors());
+        $this->assertInternalType('array', $clog->getColorMap());
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Commandline\CLog::log
      */
     public function testLog()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $time = 1387590509;
+
+        $stub = $this->getMock('MarketMeSuite\Phranken\Commandline\CLog', array('getTime'));
+        $stub->expects($this->any())
+            ->method('getTime')
+            ->will($this->returnValue($time));
+
+        // ensure a blank color map
+        $stub->setColorMap(array());
+
+        $expected = "Sat Dec 21 01:48:29 [info] message \n";
+
+        // capture actual
+        ob_start();
+        $stub->log('message');
+        $actual = ob_get_clean();
+
+        $this->assertSame(
+            $expected,
+            $actual
+        );
+
+
+        // test different status message
+        $expected = "Sat Dec 21 01:48:29 [fatal] message \n";
+
+        // capture actual
+        ob_start();
+        $stub->log('message', CLog::C_FATAL);
+        $actual = ob_get_clean();
+
+        $this->assertSame(
+            $expected,
+            $actual
+        );
+
+        // test detail output
+        $expected = "Sat Dec 21 01:48:29 [fatal] message \n" .
+            "array(1) {\n" .
+            "  'detail' =>\n" .
+            "  string(12) \"some details\"\n" .
+            "}\n\n";
+
+        // capture actual
+        ob_start();
+        $stub->log('message', CLog::C_FATAL, array('detail' => 'some details'));
+        $actual = ob_get_clean();
+
+        $this->assertSame(
+            $expected,
+            $actual
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Commandline\CLog::out
+     */
+    public function testOut()
+    {
+        // make protected method accessible for testing
+        $method = new \ReflectionMethod(
+            'MarketMeSuite\Phranken\Commandline\CLog',
+            'out'
+        );
+
+        $method->setAccessible(true);
+
+        // test output
+        $expected = 'message';
+
+        // capture actual
+        ob_start();
+        $method->invoke($this->object, $expected);
+        $actual = ob_get_clean();
+
+        $this->assertEquals(
+            $expected,
+            $actual
+        );
+
+        // test output suppression
+        $this->object->suppressOutput(true);
+        $expected = false;
+
+        // capture actual
+        ob_start();
+        $method->invoke($this->object, 'message');
+        $actual = ob_get_clean();
+
+        $this->assertEquals(
+            $expected,
+            $actual
         );
     }
 
