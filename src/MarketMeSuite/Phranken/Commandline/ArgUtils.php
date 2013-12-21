@@ -39,7 +39,7 @@ class ArgUtils
 
             return array($key => $value);
 
-        } else if (static::argExists($args, $key) === false) {
+        } elseif (static::argExists($args, $key) === false) {
 
             // return a blank array when the $key does not exist, unless otherwise
             // overriden by $defaultMissingArg
