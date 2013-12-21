@@ -19,20 +19,20 @@ class CLog
      * When true output is suppressed
      * @var boolean
      */
-    private $_suppressOutput = false;
+    private $suppressOutput = false;
 
     /**
      * An array of possible colors that can be used for output
      * @var array
      */
-    private $_colors = null;
-    private $_colorMap = null;
+    private $colors = null;
+    private $colorMap = null;
     
     public function __construct($name = '')
     {
         $this->name = $name;
 
-        $this->_colors = array(
+        $this->colors = array(
             'LIGHT_RED'   => "[1;31m",
             'LIGHT_GREEN' => "[1;32m",
             'YELLOW'      => "[1;33m",
@@ -49,11 +49,10 @@ class CLog
             'CYAN'        => "[0;36m",
             'BOLD'        => "[1m",
             'UNDERSCORE'  => "[4m",
-            'REVERSE'     => "[7m",
-            'YELLOW'     => "[1;33m",
+            'REVERSE'     => "[7m"
         );
 
-        $this->_colorMap = array(
+        $this->colorMap = array(
             self::C_INFO => 'CYAN',
             self::C_WARNING => 'YELLOW',
             self::C_FATAL => 'RED',
@@ -69,7 +68,7 @@ class CLog
      */
     public function log($message, $type = self::C_INFO, $detail = null)
     {
-        $today = date('D M d H:i:s');
+        $today = date('D M d H:i:s', $this->getTime());
 
         if ($detail !== null) {
             
@@ -81,9 +80,9 @@ class CLog
         
         // if there is a process name then append it
         $name = '';
-        strlen($this->name) and $name = " [". $this->applyColorMap($this->name, $this->_colorMap, $this->_colors) . "]";
+        strlen($this->name) and $name = " [". $this->applyColorMap($this->name, $this->colorMap, $this->colors) . "]";
         
-        $type = $this->applyColorMap($type, $this->_colorMap, $this->_colors);
+        $type = $this->applyColorMap($type, $this->colorMap, $this->colors);
 
         $this->out("{$today}{$name} [$type] $message $detail".PHP_EOL);
     }
@@ -94,7 +93,7 @@ class CLog
      */
     protected function out($message)
     {
-        if ($this->_suppressOutput === true) {
+        if ($this->suppressOutput === true) {
             return;
         }
 
@@ -147,7 +146,7 @@ class CLog
      */
     public function getColors()
     {
-        return $this->_colors;
+        return $this->colors;
     }
 
     /**
@@ -156,7 +155,7 @@ class CLog
      */
     public function setColors(array $colors)
     {
-        $this->_colors = $colors;
+        $this->colors = $colors;
     }
 
     /**
@@ -165,7 +164,7 @@ class CLog
      */
     public function getColorMap()
     {
-        return $this->_colorMap;
+        return $this->colorMap;
     }
 
     /**
@@ -174,7 +173,7 @@ class CLog
      */
     public function setColorMap(array $map)
     {
-        $this->_colorMap = $map;
+        $this->colorMap = $map;
     }
 
     /**
@@ -183,6 +182,16 @@ class CLog
      */
     public function suppressOutput($val = false)
     {
-        $this->_suppressOutput = $val;
+        $this->suppressOutput = $val;
+    }
+
+    /**
+     * @return int Current unix Epoch
+     *
+     * @see time()
+     */
+    protected function getTime()
+    {
+        return time();
     }
 }
