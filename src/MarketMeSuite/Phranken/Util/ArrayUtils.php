@@ -31,11 +31,11 @@ class ArrayUtils
     public static function constructFieldArray($array, $field)
     {
         $arr = array();
-        if (!isset($array)) {
+        if (empty($array)) {
             return false;
         }
         
-        if (!isset($field)) {
+        if (empty($field)) {
             return false;
         }
 
@@ -88,7 +88,7 @@ class ArrayUtils
                 if ($i == count($paths) - 1) {
                     
                     return true;
-                } else if (is_array($a[$p])) {
+                } elseif (is_array($a[$p])) {
                     
                     $a =& $a[$p];
                 } else {

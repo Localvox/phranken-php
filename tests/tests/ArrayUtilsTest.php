@@ -30,37 +30,93 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers MarketMeSuite\Phranken\Util\ArrayUtils::BuildJoinedArray
-     * @todo   Implement testBuildJoinedArray().
      */
     public function testBuildJoinedArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $actual = ArrayUtils::buildJoinedArray(
+            array(
+                array('apples', 'oranges'),
+                array('pears', 'bananas')
+            ),
+            ','
         );
+
+        $expected = array (
+            0 => 'apples,oranges',
+            1 => 'pears,bananas',
+        );
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**
      * @covers MarketMeSuite\Phranken\Util\ArrayUtils::ConstructFieldArray
-     * @todo   Implement testConstructFieldArray().
      */
     public function testConstructFieldArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $actual = ArrayUtils::constructFieldArray(
+            array(
+                array('id' => 'apples'),
+                array('id' => 'oranges'),
+                array('id' => 'pears'),
+                array('id' => 'bananas')
+            ),
+            'id'
         );
+
+        $expected = array (
+            0 => 'apples',
+            1 => 'oranges',
+            2 => 'pears',
+            3 => 'bananas',
+        );
+
+        $this->assertEquals($expected, $actual);
+
+
+        // empty array
+        $actual = ArrayUtils::constructFieldArray(
+            array(),
+            'id'
+        );
+
+        $expected = false;
+
+        $this->assertEquals($expected, $actual);
+
+        // empty field
+        $actual = ArrayUtils::constructFieldArray(
+            array('id'),
+            ''
+        );
+
+        $expected = false;
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**
      * @covers MarketMeSuite\Phranken\Util\ArrayUtils::FlattenArray
-     * @todo   Implement testFlattenArray().
      */
     public function testFlattenArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $expected = array (
+            0 => 'apples',
+            1 => 'oranges',
+            2 => 'pears',
+            3 => 'bananas',
         );
+
+        $actual = ArrayUtils::flattenArray(
+            array(
+                array('id' => 'apples'),
+                array('id' => 'oranges'),
+                array('id' => 'pears'),
+                array('id' => 'bananas')
+            ),
+            'id'
+        );
+
+        $this->assertEquals($expected, $actual);
     }
 }
