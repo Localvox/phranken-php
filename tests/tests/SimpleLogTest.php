@@ -104,5 +104,22 @@ EOT;
             $expected,
             $actual
         );
+
+        //-------- INTEGERS --------
+
+        ob_start();
+        $this->object->log(1234, 5678);
+        $actual = ob_get_clean();
+
+        $expected = <<<EOT
+1234
+5678
+
+EOT;
+
+        $this->assertSame(
+            $expected,
+            $actual
+        );
     }
 }
