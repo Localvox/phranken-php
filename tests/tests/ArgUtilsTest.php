@@ -120,4 +120,46 @@ class ArgUtilsTest extends \PHPUnit_Framework_TestCase
             'should return true if the argument was found'
         );
     }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Commandline\ArgUtils::isOption
+     */
+    public function testIsOption()
+    {
+        $this->assertEquals(
+            true,
+            ArgUtils::isOption('-opt'),
+            'should return true'
+        );
+
+        $this->assertEquals(
+            false,
+            ArgUtils::isOption('opt'),
+            'should return false'
+        );
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Commandline\ArgUtils::argIndex
+     */
+    public function testArgIndex()
+    {
+        $this->assertEquals(
+            3,
+            ArgUtils::argIndex($this->testArgs, '-host'),
+            'should return true'
+        );
+
+        $this->assertEquals(
+            5,
+            ArgUtils::argIndex($this->testArgs, '-port'),
+            'should return true'
+        );
+
+        $this->assertEquals(
+            -1,
+            ArgUtils::argIndex($this->testArgs, '-does_not_exist'),
+            'should return -1 when arg not found'
+        );
+    }
 }
