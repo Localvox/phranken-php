@@ -176,7 +176,7 @@ class MysqlUtils
         foreach ($array as $row) {
             $html .= "<tr>";
 
-            foreach ($row as $key => $val) {
+            foreach ($row as $val) {
                 $html .= "<td>$val</td>";
             }
 
@@ -204,11 +204,11 @@ class MysqlUtils
         }
         
         // get longest field/value
-        $longestField;
-        $longestVal;
+        $longestField = 0;
+        $longestVal = 0;
         $rowLength = count($arr[0]);
         
-        foreach ($arr as $key => $val) {
+        foreach ($arr as $val) {
             $length = max(
                 array_keys($val)
             );
@@ -246,7 +246,7 @@ class MysqlUtils
         foreach ($arr as $key => $row) {
             $padding = str_pad($key, $longestData, " ");
             $resStr .= "$padding| ";
-            foreach ($row as $key => $val) {
+            foreach ($row as $val) {
 
                 $padding = str_pad($val, $longestData, " ");
                 $resStr .= "$padding| ";
@@ -275,7 +275,7 @@ class MysqlUtils
         
         if (count($fields) == 1) {
             $queryFields = "`".$fields[0]."`";
-        } else if (count($fields) > 1) {
+        } elseif (count($fields) > 1) {
             $queryFields = "`".implode("`,`", $fields)."`";
         }
         
@@ -297,7 +297,7 @@ class MysqlUtils
             return '';
         }
         
-        foreach ($arr as $key => $val) {
+        foreach ($arr as $val) {
             $likeArr[] = "`".$field."` LIKE '%$val%'";
         }
 
