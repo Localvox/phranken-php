@@ -29,51 +29,60 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MarketMeSuite\Phranken\Database\MySql\Util\MysqlUtils::MysqlUtils
-     * @todo   Implement testMysqlUtils().
-     */
-    public function testMysqlUtils()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers MarketMeSuite\Phranken\Database\MySql\Util\MysqlUtils::ConstructInString
-     * @todo   Implement testConstructInString().
-     */
-    public function testConstructInString()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers MarketMeSuite\Phranken\Database\MySql\Util\MysqlUtils::ConstructInStringFromArray
      * @todo   Implement testConstructInStringFromArray().
      */
     public function testConstructInStringFromArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $actual = MysqlUtils::constructInStringFromArray(
+            array(
+                'this',
+                'is',
+                'a',
+                'test'
+            )
         );
+        $expected = "IN('this','is','a','test')";
+
+        $this->assertSame($expected, $actual);
+
+
+        $actual = MysqlUtils::constructInStringFromArray(
+            array(
+                array('this'),
+                array('is'),
+                array('a'),
+                array('test')
+            ),
+            '0'
+        );
+
+        $expected = "IN('this','is','a','test')";
+
+        $this->assertSame($expected, $actual);
     }
 
     /**
      * @covers MarketMeSuite\Phranken\Database\MySql\Util\MysqlUtils::ConstructFieldArray
-     * @todo   Implement testConstructFieldArray().
      */
     public function testConstructFieldArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $actual = MysqlUtils::constructFieldArray(
+            array(
+                array('id' => 'foo'),
+                array('id' => 'bar'),
+                array('id' => 'baz'),
+            ),
+            'id'
         );
+
+        $expected = array(
+            'foo',
+            'bar',
+            'baz'
+        );
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -84,7 +93,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -96,7 +105,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -108,7 +117,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -120,7 +129,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -132,7 +141,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -144,7 +153,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -156,7 +165,7 @@ class MysqlUtilsTest extends \PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 }
