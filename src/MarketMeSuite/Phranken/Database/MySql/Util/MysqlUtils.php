@@ -40,12 +40,14 @@ class MysqlUtils
         
         return $in;
     }
-    
+
     /**
-     * Builds a MySQL IN() string, from and array, for use in a mysql query string 
-     * @param type $array 
-     * @param type $field
-     * @return string 
+     * Builds a MySQL IN() string, from and array, for use in a mysql query string
+     *
+     * @param array  $array
+     * @param string $field
+     *
+     * @return string
      */
     public static function constructInStringFromArray($array, $field = "")
     {
@@ -75,12 +77,14 @@ class MysqlUtils
         
         return $in;
     }
-    
+
     /**
      * Constructs a flat (indexed) array with values copied from the source array
-     * @param array $array
+     *
+     * @param array  $array
      * @param string $field
-     * @return array 
+     *
+     * @return array
      */
     public static function constructFieldArray($array, $field)
     {
@@ -99,13 +103,15 @@ class MysqlUtils
         
         return $arr;
     }
-    
+
     /**
      * Gets the full array from a mysql result
-     * @param type $resource The mysql resource returned from the mysql query
-     * @param type $type Either 'A' for assoc, 'N' for a regular indexed array or, finally,
-     * 'B' for Both
-     * @return array 
+     *
+     * @param mixed  $resource The mysql resource returned from the mysql query
+     * @param string $type     $type Either 'A' for assoc, 'N' for a regular
+     *                         indexed array or, finally, 'B' for Both
+     *
+     * @return array
      */
     public static function getFullArray($resource, $type = "A")
     {
@@ -143,7 +149,9 @@ class MysqlUtils
 
     /**
      * Creates a HTML table of the mysql result
-     * @param type $resource
+     *
+     * @param mixed $resource
+     *
      * @return string The HTML code for a regular HTML table
      */
     public static function getHTMLTable($resource)
@@ -178,11 +186,13 @@ class MysqlUtils
         $html .= "</table>";
         return $html;
     }
-    
+
     /**
      * Displays a mysql result in an easy to read output
-     * @param type $resource The mysql resource to display. Must be from a query which gets results
-     * otherwise nothing is shown
+     *
+     * @param mixed $resource The mysql resource to display. Must be from a query which gets results
+     *                        otherwise nothing is shown
+     *
      * @return string The pretty representation of the mysql result
      */
     public static function displayMysqlResult($resource)
@@ -246,10 +256,12 @@ class MysqlUtils
         
         return $resStr;
     }
-    
+
     /**
      * Turns an array of strings into a fields string to use in SELECT statements
+     *
      * @param array $fields an array of strings that represent fields
+     *
      * @return string If there were any errors * will be returned, otherwise
      * a fields list will be returned. e.g `field1`,`field2`
      */
@@ -269,12 +281,12 @@ class MysqlUtils
         
         return  $queryFields;
     }
-    
+
     /**
-     * 
-     * @param type $query
-     * @param type $field
-     * @return type 
+     * @param string $query
+     * @param string $field
+     *
+     * @return string
      */
     public static function buildLikeQueryString($query, $field)
     {
@@ -296,11 +308,13 @@ class MysqlUtils
 
         return $likeStr;
     }
-    
+
     /**
      * Implode every array within a 2D array
-     * @param type $array
-     * @param type $del
+     *
+     * @param array  $array
+     * @param string $del
+     *
      * @return array The imploded array
      */
     public static function buildJoinedArray(array $array, $del)
@@ -311,12 +325,16 @@ class MysqlUtils
         }
         return $newArr;
     }
-    
+
     /**
-     * Querys mysql and auto converts results to an assiciative array
-     * @param string $query The mysql query to run
-     * @param resource $con   The mysql connection resource
-     * @param boolean $singleRecord Whether a single record shouldbe the only array returned. If this is true only a single associative array will be returned
+     * Queries mysql and auto converts results to an associative array
+     *
+     * @param string   $query        The mysql query to run
+     * @param resource $con          The mysql connection resource
+     * @param boolean  $singleRecord Whether a single record should be the only array returned.
+     *                               If this is true only asingle associative array will be returned
+     *
+     * @throws MysqlUtilsException
      * @return array An array of arrays representing each row as an associative array
      */
     public static function queryAssoc($query, $con, $singleRecord = false)
