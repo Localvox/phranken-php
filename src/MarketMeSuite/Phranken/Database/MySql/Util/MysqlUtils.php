@@ -11,8 +11,10 @@ class MysqlUtils
     /**
      * Creates an IN() string from the supplied mysql result data and the target field name
      *
-     * @param $data the raw mysql result (not the fetch array)
-     * @param $field the table field to use in the IN()
+     * @param mixed  $data  the raw mysql result (not the fetch array)
+     * @param string $field the table field to use in the IN()
+     *
+     * @return bool|string
      */
     public static function constructInString($data, $field)
     {
