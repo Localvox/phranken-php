@@ -9,16 +9,19 @@ use MarketMeSuite\Phranken\Database\Interfaces\IDatabaseUser;
 interface IDatabaseUserMongo extends IDatabaseUser
 {
     public function getCollectionName();
-    
+
     /**
      * Gets the set collection
+     *
+     * @param string $name
+     *
      * @return string A collection name
      */
     public function setCollectionName($name);
 
     /**
      * Uses set information to resolve the actual collection instance
-     * @return MongoCollection The configured MongoCollection
+     * @return \MongoCollection The configured MongoCollection
      */
     public function getCollection();
 }

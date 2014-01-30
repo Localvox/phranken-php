@@ -45,7 +45,16 @@ class ArrayUtils
         
         return $arr;
     }
-    
+
+    /**
+     * Extract all properties associated with the key '$key'
+     * within each element in $array and create a new array from the result
+     *
+     * @param array  $array An array of associative arrays
+     * @param string $key
+     *
+     * @return array
+     */
     public static function flattenArray(array $array, $key)
     {
         if (count($array) == 0) {
@@ -235,7 +244,7 @@ class ArrayUtils
 
         // Takes the number of results being demanded ($count) and selects that many random elements from the array.
         for ($i=0; $i < $count; ++$i) {
-            
+
             // Defines a random key in the range of the $array elements
             $randKey = rand(0, count($array)-1);
 
