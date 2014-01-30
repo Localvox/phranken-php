@@ -14,7 +14,8 @@ interface IDatabaseUser
 
     /**
      * Sets the current database name
-     * @param string $db The name of the database
+     *
+     * @param string $name The name of the database
      */
     public function setDatabaseName($name);
 
