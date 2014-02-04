@@ -1,9 +1,9 @@
 <?php
 namespace MarketMeSuite\Phranken\Database\Object;
 
-use MarketMeSuite\Phranken\Database\Interfaces\IDbObject;
-use MarketMeSuite\Phranken\Database\Exception\DbObjectException;
 use MarketMeSuite\Phranken\Crypt\UniqueIDGenerator;
+use MarketMeSuite\Phranken\Database\Exception\DbObjectException;
+use MarketMeSuite\Phranken\Database\Interfaces\IDbObject;
 
 /**
  * Provides a way to load database objects into a well defined class structure
@@ -71,7 +71,7 @@ abstract class DbObject implements IDbObject
 
         foreach ($map as $dbKey => $variableName) {
 
-            if (! property_exists($this, $variableName)) {
+            if (!property_exists($this, $variableName)) {
                 throw new DbObjectException('property "' . $variableName . '" was not found in this object');
             }
 
@@ -96,7 +96,7 @@ abstract class DbObject implements IDbObject
         $map = $this->getMap();
 
         $providedkeys = array_keys($arr);
-        $mappedKeys = array_keys($map);
+        $mappedKeys   = array_keys($map);
 
         $missingKeys = array_diff($mappedKeys, $providedkeys);
 
@@ -175,20 +175,20 @@ abstract class DbObject implements IDbObject
     public function toQuery($type)
     {
         $arr = $this->toArray();
-        switch($type) {
+        switch ($type) {
             case 'set':
                 // the _id field can not exist for set queries
-                unset( $arr[$this->getIdFieldName()] );
+                unset($arr[$this->getIdFieldName()]);
                 return $arr;
-            break;
+                break;
             case 'insert':
                 // genreate a UUID for the insert query
                 $arr[$this->getIdFieldName()] = UniqueIDGenerator::GenerateUUID();
                 return $arr;
-            break;
+                break;
             default:
                 throw new DbObjectException('query type "' . $type . '" has no actions');
-            break;
+                break;
         }
     }
 
@@ -214,7 +214,9 @@ abstract class DbObject implements IDbObject
 
     /**
      * Gets a property
+     *
      * @param  string $key The name of the property
+     *
      * @return mixed       The value of $key
      *
      * @throws DbObjectException When $key does not exist in map
@@ -233,14 +235,17 @@ abstract class DbObject implements IDbObject
     /**
      * Runs multiple fromArray() for every item in $arr
      *
-     * @param array  $arr   An array of mongo documents, Can also be a mongo cursor
-     * @param string $class A valid class name that implements IDbObject
+     * @param array|\Traversable $iterator An array of mongo documents, Can also be a mongo cursor
+     * @param string             $class    A valid class name that implements IDbObject
      *
      * @return array An array of objects
      * @throws DbObjectException When $class does not implement IDbObject
      */
-    public static function multiFromArray(array $arr, $class = 'DbObject')
+    public static function multiFromArray($iterator, $class = 'DbObject')
     {
+        if ((is_array($iterator) || $iterator instanceof \Traversable) === false) {
+            throw new DbObjectException('$iterator was not and array and did not implement Traversable');
+        }
 
         if (new $class instanceof IDbObject) {
             // nothing
@@ -250,7 +255,9 @@ abstract class DbObject implements IDbObject
 
         $objects = array();
 
-        foreach ($arr as $dbArr) {
+        foreach ($iterator as $dbArr) {
+
+            /** @var IDbObject $newObject */
             $newObject = new $class;
             $newObject->fromArray($dbArr);
             $objects[] = $newObject;
