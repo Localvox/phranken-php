@@ -246,7 +246,7 @@ class ArrayUtils
                 return false;
             }
 
-            if (is_array($array[$key])) {
+            if (is_array($array[$key]) && is_array($schema[$key])) {
                 return static::structureExists($array[$key], $schema[$key]);
             }
         }

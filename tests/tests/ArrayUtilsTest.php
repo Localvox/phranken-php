@@ -152,5 +152,12 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(true, $actual, 'empty arrays are the same schema');
+
+        $actual = ArrayUtils::structureExists(
+            array('user' => array('access' => array('nope' => 'nope'))),
+            array('user' => array('access' => ''))
+        );
+
+        $this->assertSame(true, $actual, 'does not care about deeper strucures');
     }
 }
