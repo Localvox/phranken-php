@@ -231,6 +231,30 @@ class ArrayUtils
     }
 
     /**
+     * Checks that the given array implements the given schema
+     *
+     * @param array $array
+     * @param array $schema
+     *
+     * @return bool
+     */
+    public static function structureExists(array $array, array $schema)
+    {
+        foreach ($schema as $key => $value) {
+
+            if (!array_key_exists($key, $array)) {
+                return false;
+            }
+
+            if (is_array($array[$key])) {
+                return static::structureExists($array[$key], $schema[$key]);
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * This is modeled off the PHP array_rand() function, this one randomly selects array elements from the array it is passed.
      * @param  array $array The source array to select random elements from
      * @param  int $count The number of random elements to return

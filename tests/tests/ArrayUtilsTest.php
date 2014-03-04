@@ -96,7 +96,7 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MarketMeSuite\Phranken\Util\ArrayUtils::FlattenArray
+     * @covers MarketMeSuite\Phranken\Util\ArrayUtils::flattenArray
      */
     public function testFlattenArray()
     {
@@ -118,5 +118,39 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Util\ArrayUtils::structureExists
+     */
+    public function testStructureExists()
+    {
+        $actual = ArrayUtils::structureExists(
+            array('user' => array('access' => '1337')),
+            array('user' => array('access' => ''))
+        );
+
+        $this->assertSame(true, $actual);
+
+        $actual = ArrayUtils::structureExists(
+            array('user' => array('access' => '1337', 'token' => '80081322')),
+            array('user' => array('access' => ''))
+        );
+
+        $this->assertSame(true, $actual, 'does not care about extra strucure');
+
+        $actual = ArrayUtils::structureExists(
+            array('user' => array('access' => '1337')),
+            array('user' => array('access' => '', 'token' => ''))
+        );
+
+        $this->assertSame(false, $actual, 'missing structure is failure');
+
+        $actual = ArrayUtils::structureExists(
+            array(),
+            array()
+        );
+
+        $this->assertSame(true, $actual, 'empty arrays are the same schema');
     }
 }
