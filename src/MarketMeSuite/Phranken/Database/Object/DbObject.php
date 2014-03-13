@@ -182,8 +182,12 @@ abstract class DbObject implements IDbObject
                 return $arr;
                 break;
             case 'insert':
-                // genreate a UUID for the insert query
-                $arr[$this->getIdFieldName()] = UniqueIDGenerator::GenerateUUID();
+                // generate a UUID for the insert query if no id is already set
+                $ident = $this->getProp($this->getIdPropName());
+                if (empty($ident)) {
+
+                    $arr[$this->getIdFieldName()] = UniqueIDGenerator::GenerateUUID();
+                }
                 return $arr;
                 break;
             default:
