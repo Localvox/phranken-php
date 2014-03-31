@@ -79,6 +79,10 @@ abstract class DbObjectDynamic extends DbObject implements IDbObjectDynamic
      */
     public function getDynamicProp($key)
     {
+        if (!array_key_exists($key, $this->dynamicProps)) {
+            return null;
+        }
+
         return $this->dynamicProps[$key];
     }
 

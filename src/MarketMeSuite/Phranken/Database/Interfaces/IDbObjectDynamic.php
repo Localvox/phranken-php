@@ -9,6 +9,8 @@ interface IDbObjectDynamic extends IDbObject
     /**
      * gets a parsed dynamic property by key
      * @param string $key The key of the value to get
+     *
+     * @return mixed|null When $key does not exist null is returned
      */
     public function getDynamicProp($key);
 
