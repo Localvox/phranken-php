@@ -153,4 +153,12 @@ class MongoConnectionManagerV2 extends MongoConnectionManager
 
         return $con;
     }
+
+    /**
+     * @return MongoClient
+     */
+    public function getClient()
+    {
+        return $this->con;
+    }
 }

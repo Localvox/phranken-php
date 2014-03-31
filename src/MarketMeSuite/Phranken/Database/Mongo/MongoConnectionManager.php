@@ -2,6 +2,7 @@
 namespace MarketMeSuite\Phranken\Database\Mongo;
 
 use MarketMeSuite\Phranken\Database\Mongo\Exception\MongoConnectionManagerException;
+use MongoConnectionException;
 use \stdClass;
 use \Mongo;
 
@@ -11,6 +12,9 @@ use \Mongo;
  */
 class MongoConnectionManager extends stdClass
 {
+    /**
+     * @var \Mongo
+     */
     protected $con;
     private $config = array();
 
@@ -34,9 +38,14 @@ class MongoConnectionManager extends stdClass
 
     /**
      * Configures and connects a single or multiple mongo databases
-     * @param mixed $config An array containing information for connection to a
-     *                      database, or a json string that represents the same 
-     *                      structure
+     *
+     * @param mixed  $config An array containing information for connection to a
+     *                       database, or a json string that represents the same
+     *                       structure
+     * @param string $db
+     * @param bool   $slave
+     *
+     * @throws Exception\MongoConnectionManagerException
      */
     public function configure($config, $db = 'all', $slave = false)
     {
@@ -46,7 +55,7 @@ class MongoConnectionManager extends stdClass
             if ($config === null) {
                 throw new MongoConnectionManagerException('invalid config, string given was not valid json');
             }
-        } else if (!is_array($config)) {
+        } elseif (!is_array($config)) {
             throw new MongoConnectionManagerException('config given was neither a json string or an array');
         }
 
@@ -84,7 +93,7 @@ class MongoConnectionManager extends stdClass
             foreach ($dbs['databases'] as $theDb) {
                 $this->loadDb($theDb['name']);
             }
-        } else if (is_array($db)) {
+        } elseif (is_array($db)) {
 
             foreach ($db as $theDb) {
 
@@ -107,12 +116,15 @@ class MongoConnectionManager extends stdClass
     {
         $this->{$name} = $this->con->{$name};
     }
-    
+
     /**
      * Recursive function to try to connect to backup mongo connections
-     * @param type $options
-     * @param type $fallBack
-     * @return type 
+     *
+     * @param            $options
+     * @param int        $fallBack
+     *
+     * @throws Exception\MongoConnectionManagerException
+     * @return \Mongo
      */
     protected function tryConnect($options, $fallBack = 0)
     {
@@ -138,5 +150,13 @@ class MongoConnectionManager extends stdClass
         }
 
         return $con;
+    }
+
+    /**
+     * @return Mongo
+     */
+    public function getClient()
+    {
+        return $this->con;
     }
 }
