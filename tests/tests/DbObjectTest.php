@@ -207,7 +207,7 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->toQuery('insert');
         $this->assertArrayHasKey('_id', $actual);
 
-        $this->assertNotNull($this->object->getProp(Db))
+        $this->assertNotNull($this->object->getProp(DbObject::$ID_PROP));
 
         $actual = $this->object->toQuery('set');
         $this->assertArrayNotHasKey('_id', $actual);
