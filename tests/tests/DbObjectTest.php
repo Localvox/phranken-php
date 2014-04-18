@@ -116,18 +116,6 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::toQuery
-     * @todo   Implement testToQuery().
-     */
-    public function testToQuery()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers MarketMeSuite\Phranken\Database\Object\DbObject::setProp
      * @todo   Implement testSetProp().
      */
@@ -205,5 +193,33 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->object->setStrictMap(true);
         $this->object->assertArrayHasAllMapKeys($this->validDbArrayNullValues);
+    }
+
+    //--------------------------------------
+    // TOQUERY
+    //--------------------------------------
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::toQuery
+     */
+    public function testToQuery()
+    {
+        $actual = $this->object->toQuery('insert');
+        $this->assertArrayHasKey('_id', $actual);
+
+        $this->assertNotNull($this->object->getProp(Db))
+
+        $actual = $this->object->toQuery('set');
+        $this->assertArrayNotHasKey('_id', $actual);
+    }
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::toQuery
+     *
+     * @expectedException \MarketMeSuite\Phranken\Database\Exception\DbObjectException
+     */
+    public function testToQueryInvalidAction()
+    {
+        $this->object->toQuery('invalid');
     }
 }

@@ -187,6 +187,7 @@ abstract class DbObject implements IDbObject
                 if (empty($ident)) {
 
                     $arr[$this->getIdFieldName()] = UniqueIDGenerator::GenerateUUID();
+                    $this->setProp($this->getIdPropName(), $arr[$this->getIdFieldName()]);
                 }
                 return $arr;
                 break;
