@@ -24,6 +24,12 @@ class NetUtils
     public static function curlGetContents($url, array $vars, $method = 'post', $disableEncoding = false)
     {
         $c = curl_init();
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            curl_setopt($c, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        }
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            curl_setopt($c, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
+        }
         $strParams = "";
         if (count($vars) > 0) {
             array_walk(
