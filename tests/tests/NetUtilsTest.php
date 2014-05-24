@@ -7,36 +7,20 @@ namespace MarketMeSuite\Phranken\Util;
 class NetUtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var NetUtils
+     * @covers MarketMeSuite\Phranken\Util\NetUtils::urlIsReachable
      */
-    protected $object;
-
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
+    public function testUrlIsReachable()
     {
-        $this->object = new NetUtils;
-    }
+        $expected = true;
+        $actual = NetUtils::urlIsReachable('http://marketmesuite.com/');
+        $this->assertSame($expected, $actual);
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
+        $expected = false;
+        $actual = NetUtils::urlIsReachable('http://marketmesuite-doesnotexist.com/');
+        $this->assertSame($expected, $actual);
 
-    /**
-     * @covers MarketMeSuite\Phranken\Util\NetUtils::curl_get_contents
-     * @todo   Implement testCurl_get_contents().
-     */
-    public function testCurl_get_contents()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $expected = false;
+        $actual = NetUtils::urlIsReachable('http://marketmesuite.com/thispagedoesnotexist');
+        $this->assertSame($expected, $actual);
     }
 }

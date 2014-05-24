@@ -57,4 +57,23 @@ class NetUtils
 
         return $result;
     }
+
+    /**
+     * @param string $url
+     *
+     * @return bool True if url returns a status less than 400
+     *              False otherwise or http code is zero
+     */
+    public static function urlIsReachable($url)
+    {
+        $handler = curl_init($url);
+        curl_setopt($handler, CURLOPT_NOBODY, true);
+        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($handler);
+        $httpCode = curl_getinfo($handler, CURLINFO_HTTP_CODE);
+        $valid = $httpCode < 400 && $httpCode !== 0;
+        curl_close($handler);
+
+        return $valid;
+    }
 }
