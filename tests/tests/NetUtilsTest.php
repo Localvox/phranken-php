@@ -22,5 +22,10 @@ class NetUtilsTest extends \PHPUnit_Framework_TestCase
         $expected = false;
         $actual = NetUtils::urlIsReachable('http://marketmesuite.com/thispagedoesnotexist');
         $this->assertSame($expected, $actual);
+
+        // test custom handler
+        $expected = true;
+        $actual = NetUtils::urlIsReachable('https://marketmesuite.com', curl_init('https://marketmesuite.com'));
+        $this->assertSame($expected, $actual);
     }
 }

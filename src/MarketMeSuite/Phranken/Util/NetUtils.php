@@ -1,6 +1,6 @@
 <?php
 namespace MarketMeSuite\Phranken\Util;
-    
+
 /**
  * Provides helper methods for working with network data, such as curl.
  *
@@ -61,18 +61,22 @@ class NetUtils
     /**
      * @param string $url
      *
+     * @param null|resource   $curlHandler
+     *
      * @return bool True if url returns a status less than 400
      *              False otherwise or http code is zero
      */
-    public static function urlIsReachable($url)
+    public static function urlIsReachable($url, $curlHandler = null)
     {
-        $handler = curl_init($url);
-        curl_setopt($handler, CURLOPT_NOBODY, true);
-        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($handler);
-        $httpCode = curl_getinfo($handler, CURLINFO_HTTP_CODE);
+        if (empty($curlHandler)) {
+            $curlHandler = curl_init($url);
+        }
+        curl_setopt($curlHandler, CURLOPT_NOBODY, true);
+        curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curlHandler);
+        $httpCode = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
         $valid = $httpCode < 400 && $httpCode !== 0;
-        curl_close($handler);
+        curl_close($curlHandler);
 
         return $valid;
     }
