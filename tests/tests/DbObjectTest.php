@@ -152,18 +152,6 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::MultiToArray
-     * @todo   Implement testMultiToArray().
-     */
-    public function testMultiToArray()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers MarketMeSuite\Phranken\Database\Object\DbObject::getMap
      * @todo   Implement testGetMap().
      */
@@ -221,5 +209,68 @@ class DbObjectTest extends \PHPUnit_Framework_TestCase
     public function testToQueryInvalidAction()
     {
         $this->object->toQuery('invalid');
+    }
+
+    //--------------------------------------
+    // MULTI TO ARRAY
+    //--------------------------------------
+
+    /**
+     * @covers MarketMeSuite\Phranken\Database\Object\DbObject::multiToArray
+     */
+    public function testMultiToArray()
+    {
+        // mock objects
+
+        $mockMap = array(
+            '_id' => 'id',
+            'key1' => 'key1',
+            'key2' => 'key2',
+        );
+
+        /** @var DbObject $obj1 */
+        $obj1 = $this->getMockForAbstractClass('MarketMeSuite\\Phranken\\Database\\Object\\DbObject');
+        $obj1->map = $mockMap;
+
+        /** @var DbObject $obj2 */
+        $obj2 = $this->getMockForAbstractClass('MarketMeSuite\\Phranken\\Database\\Object\\DbObject');
+        $obj2->map = $mockMap;
+
+        $obj1->id = $obj2->id = 'test_id';
+        $obj1->key1 = $obj2->key1 = 'val1';
+        $obj1->key2 = $obj2->key2 = 'val2';
+
+        $actual = DbObject::multiToArray(array($obj1, $obj2));
+        $this->assertEquals(
+            array(
+                array(
+                    '_id' => 'test_id',
+                    'key1' => 'val1',
+                    'key2' => 'val2',
+                ),
+                array(
+                    '_id' => 'test_id',
+                    'key1' => 'val1',
+                    'key2' => 'val2',
+                )
+            ),
+            $actual
+        );
+
+        $actual = DbObject::multiToArray(array($obj1, $obj2), array('_id', 'key1'));
+        $this->assertEquals(
+            array(
+                array(
+                    '_id' => 'test_id',
+                    'key1' => 'val1',
+                ),
+                array(
+                    '_id' => 'test_id',
+                    'key1' => 'val1',
+                )
+            ),
+            $actual,
+            'only allowed fields should be returned'
+        );
     }
 }

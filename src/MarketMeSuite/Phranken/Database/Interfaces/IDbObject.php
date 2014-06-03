@@ -65,11 +65,12 @@ interface IDbObject
      *
      * @param array $arr An array of IDbObject instances
      *
+     * @param string[] $allowedFields An array of the field names to show in conversion
+     *
      * @return array An array of arrays where each sub array is the result of calling
      * toArray on each objecting in $arr
-     * @throws DbObjectException When an object in $arr does not implement IDbObject
      */
-    public static function multiToArray(array $arr);
+    public static function multiToArray(array $arr, array $allowedFields = array());
 
     /**
      * The id field is the field that is used to build insert queries

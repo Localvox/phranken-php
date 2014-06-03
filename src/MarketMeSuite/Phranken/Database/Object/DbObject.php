@@ -276,11 +276,13 @@ abstract class DbObject implements IDbObject
      *
      * @param array $arr An array of IDbObject instances
      *
+     * @param string[] $allowedFields An array of the field names to show in conversion
+     *
+     * @throws \MarketMeSuite\Phranken\Database\Exception\DbObjectException
      * @return array An array of arrays where each sub array is the result of calling
      * toArray on each objecting in $arr
-     * @throws DbObjectException When an object in $arr does not implement IDbObject
      */
-    public static function multiToArray(array $arr)
+    public static function multiToArray(array $arr, array $allowedFields = array())
     {
         $arrs = array();
 
@@ -292,7 +294,18 @@ abstract class DbObject implements IDbObject
                 throw new DbObjectException('$dbobject must implement IDbObject');
             }
 
-            $arrs[] = $dbobject->toArray();
+            $arr = $dbobject->toArray();
+
+            if (!empty($allowedFields)) {
+
+                foreach ($arr as $key => $value) {
+                    if (!in_array($key, $allowedFields)) {
+                        unset($arr[$key]);
+                    }
+                }
+            }
+
+            $arrs[] = $arr;
         }
 
         return $arrs;
