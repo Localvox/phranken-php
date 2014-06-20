@@ -135,7 +135,7 @@ class Utils
      */
     public static function below($left, $right)
     {
-        return ($left < $value);
+        return ($left < $right);
     }
 
     /**
