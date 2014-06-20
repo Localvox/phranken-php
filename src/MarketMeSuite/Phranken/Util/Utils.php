@@ -26,7 +26,7 @@ class Utils
                 $str .= $indent."<".$nodeName.">";
 
                 if (is_array($value)) {
-                    $str.= self::xml_encode($value, $spaces, $key);
+                    $str.= self::xmlEncode($value, $spaces, $key);
                 } else {
                     $str.= $indent.$indent."<![CDATA[".$value."]]>";
                 }
@@ -36,7 +36,7 @@ class Utils
                 $str .= $indent."<".$key.">";
 
                 if (is_array($value)) {
-                    $str.= self::xml_encode($value, $spaces, $key);
+                    $str.= self::xmlEncode($value, $spaces, $key);
                 } else {
                     $str.= $indent.$indent."<![CDATA[".$value."]]>";
                 }
