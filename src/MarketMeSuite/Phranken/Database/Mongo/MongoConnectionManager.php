@@ -20,36 +20,26 @@ class MongoConnectionManager extends stdClass
 
     const TIMEOUT = 1000;
 
-    public function __construct($config, $db = 'all', $slave = false)
+    public function __construct($config)
     {
-
-        $this->configure($config, $db, $slave);
-    }
-
-    public function addDb($db, $slave = false, $config = null)
-    {
-
         if ($config === null) {
             $config = $this->config;
         }
 
-        $this->configure($config, $db, $slave);
+        $this->configure($config);
     }
 
     /**
      * Configures and connects a single or multiple mongo databases
      *
-     * @param mixed  $config An array containing information for connection to a
-     *                       database, or a json string that represents the same
-     *                       structure
-     * @param string $db
-     * @param bool   $slave
+     * @param string|array $config An array containing information for connection to a
+     *                             database, or a json string that represents the same
+     *                             structure
      *
      * @throws Exception\MongoConnectionManagerException
      */
-    public function configure($config, $db = 'all', $slave = false)
+    public function configure($config)
     {
-
         if (is_string($config)) {
             $config = json_decode($config, true);
             if ($config === null) {
@@ -78,34 +68,6 @@ class MongoConnectionManager extends stdClass
 
         // try connect to the mongo servers
         $this->con = $this->tryConnect($config);
-
-        // set slave okay
-        if ($slave === true) {
-            @$this->con->setSlaveOkay(true);
-        }
-
-        // load all databases
-        if ($db === 'all') {
-
-            // get a list of all databases
-            $dbs = $this->con->listDbs();
-
-            foreach ($dbs['databases'] as $theDb) {
-                $this->loadDb($theDb['name']);
-            }
-        } elseif (is_array($db)) {
-
-            foreach ($db as $theDb) {
-
-                if (is_string($theDb)) {
-                    $this->loadDb($theDb);
-                }
-            }
-
-        } else {
-
-            $this->loadDb($db);
-        }
     }
     
     /**
