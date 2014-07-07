@@ -111,10 +111,24 @@ class MongoConnectionManager extends stdClass
     /**
      * Connects to the specified connection
      * @param string $name The name of the db connection that was specified in the config array
+     *
+     * @deprecated use __get magic method access instead, its way easier
      */
     public function loadDb($name)
     {
-        $this->{$name} = $this->con->{$name};
+        // magic method __get is used instead
+    }
+
+    /**
+     * Returns the requested database
+     *
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->con->{$name};
     }
 
     /**
