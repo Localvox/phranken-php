@@ -90,6 +90,11 @@ class MongoConnectionManager extends stdClass
      */
     public function __get($name)
     {
+        // fix rare case where __get can be called before a connection is created
+        if ($this->con && !$this->con->connected) {
+            $this->con = $this->tryConnect($this->config);
+        }
+
         return $this->con->{$name};
     }
 
