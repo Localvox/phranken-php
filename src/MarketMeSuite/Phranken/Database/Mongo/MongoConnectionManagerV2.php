@@ -34,6 +34,24 @@ class MongoConnectionManagerV2 extends MongoConnectionManager
     }
 
     /**
+     * Returns the requested database
+     *
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        // fix rare case where __get can be called before a connection is created
+        // or the connection is closed while this object still exists
+        if ($this->con && count($this->con->getConnections()) === 0) {
+            $this->con = $this->tryConnect($this->config);
+        }
+
+        return $this->con->{$name};
+    }
+
+    /**
      * Recursive function to try to connect to backup mongo connections
      *
      * @param                                             $options

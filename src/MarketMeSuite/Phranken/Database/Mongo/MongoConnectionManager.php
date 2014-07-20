@@ -16,7 +16,7 @@ class MongoConnectionManager extends stdClass
      * @var \Mongo
      */
     protected $con;
-    private $config = array();
+    protected $config = array();
 
     const TIMEOUT = 1000;
 
